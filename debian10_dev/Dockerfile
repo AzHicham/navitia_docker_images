@@ -38,7 +38,7 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # we can't use pip from system it's too old
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python get-pip.py \
+RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python get-pip.py \
     && pip install -U virtualenv pipenv && \
 	# install dependancies for libc
 	pip install ujson==1.33 numpy==1.9 && \
