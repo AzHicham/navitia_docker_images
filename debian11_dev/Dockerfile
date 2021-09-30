@@ -47,8 +47,8 @@ RUN echo "deb http://http.us.debian.org/debian testing main non-free contrib" > 
 RUN apt-get update && \
 		apt-get install -y \
 	        libosmpbf-dev \
-		apt-get clean && \
-		rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+		&& apt-get clean \
+		&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # clear sources.list file
 RUN echo "" > /etc/apt/sources.list
@@ -58,10 +58,6 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python2 g
      && pip install -U virtualenv pipenv \
 		 && rm -rf /tmp/* /var/tmp/* ~/.cache/pip/*
 
-# install pip for python2.7
-RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python2 get-pip.py \
-     && pip install -U virtualenv pipenv \
-		 && rm -rf /tmp/* /var/tmp/* ~/.cache/pip/*
 
 # add user and group jenkins, with specific userid and groupid, never fail
 RUN groupadd -g 115 jenkins; exit 0
