@@ -20,6 +20,7 @@ RUN apt-get update && \
 		debhelper \
 		build-essential \
 		cmake \
+		ninja-build \
 		gcc \
 		g++ \
 		libboost-all-dev \
@@ -41,17 +42,20 @@ RUN apt-get update && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# for osmpbf 1.5.0-2 (unstable for the moment)
+# create copy of source list
+RUN cp /etc/apt/sources.list /etc/apt/sources.list.tmp
+# use unstable repo for osmpbf 1.5.0-2
 RUN echo "deb http://http.us.debian.org/debian testing main non-free contrib" > /etc/apt/sources.list
 
 RUN apt-get update && \
 		apt-get install -y \
-	        libosmpbf-dev \
+        	libosmpbf-dev \
 		&& apt-get clean \
 		&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# clear sources.list file
-RUN echo "" > /etc/apt/sources.list
+# rollback to default sources.list file
+RUN cp /etc/apt/sources.list.tmp /etc/apt/sources.list \
+	    && rm /etc/apt/sources.list.tmp
 
 # install pip for python2.7
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python2 get-pip.py \
