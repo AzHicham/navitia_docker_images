@@ -33,17 +33,19 @@ RUN apt-get update && \
         libosmpbf-dev \
         python-protobuf \
         clang-format-6.0 \
+		libffi-dev \
+        openssl \
         libssl-dev && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install Python 3.6 
-RUN curl 'https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz' | tar -xz -C /tmp/      \
-    && cd /tmp/Python-3.6.8     \
-    && ./configure              \
-    && make -j$(nproc)          \
-    && make altinstall		\
-    && rm -rf /tmp/*
+	# Install Python 3.9 needed by black for our pre-commits
+	RUN curl 'https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz' | tar -xz -C /tmp/      \
+	    && cd /tmp/Python-3.9.7     \
+	    && ./configure   \
+	    && make -j$(nproc)    \
+	    && make altinstall		\
+	    && rm -rf /tmp/*
 
 # we can't use pip from system it's too old
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python get-pip.py \
@@ -55,7 +57,7 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python ge
 # Install the latest and Greatest of Git !
 RUN apt-get update \
     && apt-get install -y dh-autoreconf libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* 
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN curl https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.26.2.tar.xz | tar -xJ -C /tmp/ \
     && cd /tmp/git-2.26.2/ \
     && make configure \
