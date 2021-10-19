@@ -33,6 +33,7 @@ RUN apt-get update && \
         libosmpbf-dev \
         python-protobuf \
         clang-format-6.0 \
+		libffi-dev \
         libssl-dev && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -44,13 +45,13 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python ge
 	pip install ujson==1.33 numpy==1.9 && \
 	rm -rf /tmp/* /var/tmp/* ~/.cache/pip/*
 
-# Install Python 3.6
-RUN curl 'https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz' | tar -xz -C /tmp/      \
-    && cd /tmp/Python-3.6.8     \
-    && ./configure              \
-    && make -j$(nproc)          \
-    && make altinstall		\
-    && rm -rf /tmp/*
+	# Install Python 3.9 needed by black for our pre-commits
+	RUN curl 'https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz' | tar -xz -C /tmp/      \
+	    && cd /tmp/Python-3.9.7     \
+	    && ./configure  \
+	    && make -j$(nproc)    \
+	    && make altinstall		\
+	    && rm -rf /tmp/*
 
 # add user and group jenkins, with specific userid and groupid, never fail
 RUN groupadd -g 115 jenkins; exit 0
