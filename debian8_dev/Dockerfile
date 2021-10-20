@@ -26,22 +26,14 @@ RUN apt-get update && \
         libgeos-c1 \
         libgoogle-perftools4 \
         libgoogle-perftools-dev \
-        libffi-dev \
-        openssl \
-        libssl-dev \
         curl \
         vim && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN echo "deb http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backport.list
-RUN echo "Acquire::Check-Valid-Until false;" >> /etc/apt/apt.conf
-RUN apt update && apt install -y -t jessie-backports openssl
-RUN echo rm -rf /etc/apt/sources.list.d/jessie-backport.list
-
-# Install Python 3.9 needed by black for our pre-commits
-  RUN curl 'https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz' | tar -xz -C /tmp/      \
-  	&& cd /tmp/Python-3.9.7     \
+# Install Python 3.6 needed by black for our pre-commits
+RUN wget 'https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz' -O - | tar -xz -C /tmp/      \
+    && cd /tmp/Python-3.6.8     \
     && ./configure              \
     && make -j$(nproc)          \
     && make altinstall		\
@@ -59,9 +51,9 @@ RUN echo "nameserver 10.50.83.15" > /etc/resolv.conf \
 
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python get-pip.py \
         && pip install -U virtualenv pipenv && \
-	# install dependancies for libc
-	pip install ujson==1.33 numpy==1.9 && \
-	rm -rf /tmp/* /var/tmp/* ~/.cache/pip/*
+        # install dependancies for libc
+        pip install ujson==1.33 numpy==1.9 && \
+        rm -rf /tmp/* /var/tmp/* ~/.cache/pip/*
 
 # Install the latest and Greatest of Git !
 RUN apt-get update \
