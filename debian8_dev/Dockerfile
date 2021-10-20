@@ -26,6 +26,7 @@ RUN apt-get update && \
         libgeos-c1 \
         libgoogle-perftools4 \
         libgoogle-perftools-dev \
+        curl \
         vim && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
