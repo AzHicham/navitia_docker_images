@@ -29,6 +29,7 @@ RUN apt-get update && \
 		libgeos-c1v5 \
 		libgoogle-perftools4 \
 		libgoogle-perftools-dev \
+		ccache \
 		vim \
         libosmpbf-dev \
         python-protobuf \

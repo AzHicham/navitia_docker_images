@@ -55,6 +55,17 @@ RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py && python ge
         pip install ujson==1.33 numpy==1.9 && \
         rm -rf /tmp/* /var/tmp/* ~/.cache/pip/*
 
+# Install recent version of ccache
+RUN wget https://github.com/ccache/ccache/releases/download/v3.7.12/ccache-3.7.12.tar.gz \
+    && tar -xvf ccache-3.7.12.tar.gz -C /tmp/ \
+    && cd /tmp/ccache-3.7.12/ \
+    && ./configure --prefix=/usr \
+    && make \
+    && make install \
+    && rm -rf /tmp/* /var/tmp/* \
+    && ccache --version
+
+
 # Install the latest and Greatest of Git !
 RUN apt-get update \
     && apt-get install -y dh-autoreconf libcurl4-gnutls-dev libexpat1-dev gettext libz-dev libssl-dev \

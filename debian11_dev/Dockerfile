@@ -38,6 +38,7 @@ RUN apt-get update && \
 		vim \
     python3-protobuf \
     clang-format \
+		ccache \
     libssl-dev && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
